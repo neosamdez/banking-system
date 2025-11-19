@@ -11,7 +11,7 @@ public class Conficional {
             System.out.println("filmes retrô que valem apena assistir ");
         }
 
-        if (inclusoNoPlano == true || tipoPlano.equals("plus")) {
+        if (inclusoNoPlano == true && tipoPlano.equals("plus")) {
             System.out.println("filme liberado");
         } else {
             System.out.println(" Deve pagar a locação");

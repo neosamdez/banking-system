@@ -3,59 +3,58 @@ import java.util.Scanner;
 public class SistemaBancario {
     public static void main(String[] args) {
         Scanner leitura = new Scanner(System.in);
-        String nome = "Neo";
-        String tipo = "Corrente";
-        double saldo = 2500;
+
+        // 1. Instanciação: Criando o objeto conta baseado na classe Conta
+        Conta minhaConta = new Conta("Neo", "Corrente", 2500.00);
+
         int opcao = 0;
 
-        System.out.println("****************************");
-        System.out.println("\nDados iniciais do cliente:");
-        System.out.println("\nnome:" + nome);
-        System.out.println("Tipo da Conta:" + tipo);
-        System.out.println("Saldo inicial:" + saldo);
-        System.out.println("\n****************************");   
-        
-        String menu = """
-                *** Operações ***
+        // Mostra os dados iniciais usando o método da própria conta
+        System.out.println(minhaConta.getResumo());
 
-                1- Consultar saldo
-                2- Receber pix
-                3- Enviar pix
-                4- sair
-                
-            ## Escolha uma opção ##
-
-                """;
-        // o menu deve aparecer enquanto a opcao for != 4
-        while(opcao != 4) {
-            System.out.println(menu);
-            opcao = leitura.nextInt(); // ler a opcao
+        while (opcao != 4) {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Consultar Saldo");
+            System.out.println("2. Receber Valor");
+            System.out.println("3. Transferir Valor");
+            System.out.println("4. Sair");
+            System.out.print("Opção: ");
+            
+            opcao = leitura.nextInt();
 
             if (opcao == 1) {
-                System.out.println("O seu saldo atual é R$" + saldo);
-
+                // O Main pergunta para o objeto quanto ele tem
+                System.out.println("Seu saldo atual é: " + minhaConta.saldo);
+            
             } else if (opcao == 2) {
-                System.out.println("Informe o valor a receber:");
-                double valorRecebido = leitura.nextDouble(); // leitura é quem ler
-                saldo += valorRecebido; // atualiza saldo
-                System.out.println("Saldo atualizado: R$" + saldo);
-
+                System.out.print("Valor a receber: ");
+                double valor = leitura.nextDouble();
+                
+                // O Main MANDA a conta receber. O Main não faz a conta de '+'
+                minhaConta.receberValor(valor);
+                System.out.println("Saldo atualizado: " + minhaConta.saldo);
+            
             } else if (opcao == 3) {
-                System.out.println("Informe o valor do pix:");
-                double valorPix = leitura.nextDouble();
+                System.out.print("Valor a transferir: ");
+                double valor = leitura.nextDouble();
 
-                if (valorPix > saldo) {
-                    System.out.println("Saldo insuficiente");
+                // O Main pede para transferir e verifica a resposta (true/false)
+                boolean sucesso = minhaConta.transferirValor(valor);
+
+                if (sucesso) {
+                    System.out.println("Transferência realizada!");
+                    System.out.println("Saldo atual: " + minhaConta.saldo);
                 } else {
-                    saldo -= valorPix; // atualiza saldo
-                    System.out.println("Saldo atualizado: R$" + saldo);
+                    System.out.println("ERRO: Saldo insuficiente.");
                 }
+            
             } else if (opcao == 4) {
-                System.out.println("Voçê saiu da sua conta");
+                System.out.println("Saindo...");
             } else {
-                System.out.println("Opção invalida");
+                System.out.println("Opção inválida.");
             }
-        } // fim do loop
+        }
+        
         leitura.close();
     }
- }   
+}
